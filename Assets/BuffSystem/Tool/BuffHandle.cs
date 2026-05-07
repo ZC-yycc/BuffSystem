@@ -1,5 +1,5 @@
 // 此文件由BuffHandleGenerater自动生成，请勿手动修改
-// 生成器文件路径: Assets/Editor/BuffHandleGenerater.cs
+// 生成器文件路径: Assets/BuffSystem/Editor/BuffHandleGenerater.cs
 
 
 using UnityEngine;

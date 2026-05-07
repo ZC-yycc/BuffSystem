@@ -8,8 +8,8 @@ using UnityEngine;
 public class BuffHandleGenerater
 {
     private static readonly                     Regex extract_number_regex_ = new(@"\d+");                              // 提取所有连续数字
-    private const string                        FILE_PATH = "Assets/Modules/Buff/Tool/BuffHandle.cs";
-    private const string                        FOLDER_PATH = "Assets/Modules/Buff/AutomationScripts";                  // 默认文件夹路径
+    private const string                        FILE_PATH = "Assets/BuffSystem/Tool/BuffHandle.cs";
+    private const string                        FOLDER_PATH = "Assets/BuffSystem/AutomationScripts";                  // 默认文件夹路径
 
 
     [MenuItem("Tools/生成BuffHandle脚本")]

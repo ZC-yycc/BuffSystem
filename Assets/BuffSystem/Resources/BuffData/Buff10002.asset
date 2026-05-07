@@ -17,6 +17,6 @@ MonoBehaviour:
   icon_: {fileID: 0}
   duration_: 5
   value_: 0
-  stack_count_: 1
+  stack_count_: 10
   effect_prefab_: {fileID: 0}
   buff_description_: "\u65B0\u589E\u52A0\u5C42\u65F6\u62E5\u6709\u81EA\u8EAB\u7684\u8BA1\u65F6\u5668\uFF0C\u4E0D\u4E0E\u5176\u4ED6\u5C42\u6570\u5E72\u6270"
