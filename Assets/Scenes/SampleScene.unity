@@ -521,7 +521,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DebugPanel
   toggle_key_: 282
   displayed_: 0
-  font_size_: 14
+  font_size_: 18
 --- !u!4 &1646989128
 Transform:
   m_ObjectHideFlags: 0
