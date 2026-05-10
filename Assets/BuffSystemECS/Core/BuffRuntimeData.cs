@@ -32,7 +32,7 @@ namespace BuffSystemECS
         /// <summary>最大层数</summary>
         public int                                  max_count;
 
-        /// <summary>Buff效果类型枚举 (Indiepndent, Refreshable, Stackable)</summary>
+        /// <summary>Buff效果类型枚举 (Independent, Refreshable, Stackable)</summary>
         public BuffEffectType                       effect_type;
 
         /// <summary>特效预制体</summary>

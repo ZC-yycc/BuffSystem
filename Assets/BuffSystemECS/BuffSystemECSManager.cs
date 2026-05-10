@@ -231,7 +231,7 @@ namespace BuffSystemECS
             if (World.EntityManager.TryGetBuffData(target_entity, buff_id, out BuffRuntimeData existing_buff))
             {
                 // 迭代 Buff
-                IterateBuff(target_entity, existing_buff, final_duration);
+                IterateBuff(target_entity, ref existing_buff, final_duration);
                 return;
             }
 
@@ -277,7 +277,7 @@ namespace BuffSystemECS
         }
 
         /// <summary>迭代已有 Buff（相同 BuffID 再次施加）</summary>
-        private void IterateBuff(BuffEntity entity, BuffRuntimeData buff_data, float duration)
+        private void IterateBuff(BuffEntity entity, ref BuffRuntimeData buff_data, float duration)
         {
             buff_data.duration = duration;
             buff_data.target_entity = entity;
@@ -303,27 +303,22 @@ namespace BuffSystemECS
                     break;
             }
 
-            // 更新实体上的 Buff 数据
-            UpdateBuffDataInEntity(entity, buff_data);
+            // 原地更新实体列表中的 Buff 数据
+            var buffs = World.EntityManager.GetEntityBuffs(entity);
+            if (buffs != null)
+            {
+                for (int i = 0; i < buffs.Count; i++)
+                {
+                    if (buffs[i].buff_id == buff_data.buff_id)
+                    {
+                        buffs[i] = buff_data;
+                        break;
+                    }
+                }
+            }
 
             // 触发事件
             OnAddBuffLayer?.Invoke(buff_data);
-        }
-
-        /// <summary>更新实体上指定的 Buff 数据</summary>
-        private void UpdateBuffDataInEntity(BuffEntity entity, BuffRuntimeData updated_data)
-        {
-            var buffs = World.EntityManager.GetEntityBuffs(entity);
-            if (buffs == null) return;
-
-            for (int i = 0; i < buffs.Count; i++)
-            {
-                if (buffs[i].buff_id == updated_data.buff_id)
-                {
-                    buffs[i] = updated_data;
-                    return;
-                }
-            }
         }
 
         /// <summary>根据 BuffID 移除实体上的 Buff</summary>

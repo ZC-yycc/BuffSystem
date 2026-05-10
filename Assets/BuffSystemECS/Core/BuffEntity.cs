@@ -211,6 +211,14 @@ namespace BuffSystemECS
             return false;
         }
 
+        /// <summary>获取实体所有的特效实例字典</summary>
+        public Dictionary<int, GameObject> GetEffectInstances(BuffEntity entity)
+        {
+            if (entity_effect_map_.TryGetValue(entity, out var effects))
+                return effects;
+            return null;
+        }
+
         /// <summary>移除实体的特效实例</summary>
         public bool RemoveEffectInstance(BuffEntity entity, int buff_id)
         {

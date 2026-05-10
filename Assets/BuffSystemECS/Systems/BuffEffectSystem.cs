@@ -40,25 +40,21 @@ namespace BuffSystemECS
         }
 
         /// <summary>
-        /// 更新特效位置
+        /// 更新特效位置（直接遍历特效实例字典，避免双层查找）
         /// </summary>
         private void UpdateEntityEffects(BuffEntity entity)
         {
-            var buffs = EntityManager.GetEntityBuffs(entity);
-            if (buffs == null) return;
-
             Transform effect_target = EntityManager.GetEffectTarget(entity);
             if (effect_target == null) return;
 
-            // 更新所有类型 Buff 的特效（Stackable 共用特效也在此管理）
-            foreach (var buff in buffs)
+            var effects = EntityManager.GetEffectInstances(entity);
+            if (effects == null) return;
+
+            foreach (var kvp in effects)
             {
-                if (EntityManager.TryGetEffectInstance(entity, buff.buff_id, out GameObject effect))
+                if (kvp.Value != null)
                 {
-                    if (effect != null)
-                    {
-                        effect.transform.position = effect_target.position;
-                    }
+                    kvp.Value.transform.position = effect_target.position;
                 }
             }
         }

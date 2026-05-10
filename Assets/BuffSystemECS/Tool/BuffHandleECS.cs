@@ -6,8 +6,6 @@ using BuffSystemECS;
 
 /// <summary>
 /// Buff 便捷调用类（ECS版本）
-/// </summary>
-/// <summary>
 /// 提供静态方法，通过 buff_id 快速添加/移除 Buff，内部使用 BuffSystemECSManager
 /// </summary>
 public static class BuffHandleECS
@@ -138,9 +136,7 @@ public static class BuffHandleECS
     /// 获取目标对象上活跃Buff的数量
     /// </summary>
     /// <param name="target">目标GameObject</param>
-    /// <summary>
-    /// 活跃Buff数量
-    /// </summary>
+    /// <returns>活跃Buff数量</returns>
     public static int GetActiveBuffCount(GameObject target)
     {
         if (BuffSystemECSManager.Instance != null && BuffSystemECSManager.Instance.TryGetEntity(target, out BuffEntity entity))

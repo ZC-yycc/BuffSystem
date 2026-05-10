@@ -118,7 +118,7 @@ namespace BuffSystemECS
         /// 添加一层（当 Stackable Buff 被迭代时调用）
         /// 特效不由层管理，由 BuffEffectSystem 统一管理共用的特效实例
         /// </summary>
-        public void AddLayer(BuffEntity entity, BuffRuntimeData buff)
+        public void AddLayer(BuffEntity entity, in BuffRuntimeData buff)
         {
             if (!stack_data_map_.TryGetValue(entity.id, out var buff_layers))
             {
@@ -132,8 +132,8 @@ namespace BuffSystemECS
                 buff_layers[buff.buff_id] = layers;
             }
 
-            // 层数已满时移除最早的一层
-            if (buff.IsFull && layers.Count > 0)
+            // 层数已满时移除最早的一层（使用 layers.Count 而非 buff.count，因为 buff 可能是旧副本）
+            if (layers.Count >= buff.max_count && layers.Count > 0)
             {
                 RemoveLayerAt(layers, 0);
             }
@@ -146,17 +146,40 @@ namespace BuffSystemECS
 
             layers.Add(new_layer);
 
-            // 更新 Buff 数据层数
-            buff.count = layers.Count;
+            // 写回实体 Buff 列表中的 count 字段
+            UpdateBuffCountInEntity(entity, buff.buff_id, layers.Count);
+        }
+
+        /// <summary>更新实体 Buff 列表中的 count 字段</summary>
+        private void UpdateBuffCountInEntity(BuffEntity entity, int buff_id, int new_count)
+        {
+            var buffs = EntityManager.GetEntityBuffs(entity);
+            if (buffs == null) return;
+
+            for (int i = 0; i < buffs.Count; i++)
+            {
+                if (buffs[i].buff_id == buff_id)
+                {
+                    var updated = buffs[i];
+                    updated.count = new_count;
+                    buffs[i] = updated;
+                    return;
+                }
+            }
         }
 
         private void RemoveLayer(BuffEntity entity, BuffRuntimeData buff, List<BuffLayerData> layers, int index)
         {
             RemoveLayerAt(layers, index);
-            buff.count = layers.Count;
 
-            // 通知层移除
-            BuffSystemECSManager.Instance?.NotifyBuffLayerRemoved(buff);
+            // 写回实体 Buff 列表中的 count 字段
+            UpdateBuffCountInEntity(entity, buff.buff_id, layers.Count);
+
+            // 获取最新 count 的 buff 副本后通知（buff 是旧副本，count 已更新到实体列表）
+            if (EntityManager.TryGetBuffData(entity, buff.buff_id, out var updated_buff))
+            {
+                BuffSystemECSManager.Instance?.NotifyBuffLayerRemoved(updated_buff);
+            }
         }
 
         private void RemoveLayerAt(List<BuffLayerData> layers, int index)

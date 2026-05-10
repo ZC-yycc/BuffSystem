@@ -54,8 +54,10 @@ namespace BuffSystemECS.Editor
             writer.WriteLine("using BuffSystemECS;");
             writer.WriteLine();
 
-            writer.DocSummary("Buff 便捷调用类（ECS版本）");
-            writer.DocSummary("提供静态方法，通过 buff_id 快速添加/移除 Buff，内部使用 BuffSystemECSManager");
+            writer.WriteLine("/// <summary>");
+            writer.WriteLine("/// Buff 便捷调用类（ECS版本）");
+            writer.WriteLine("/// 提供静态方法，通过 buff_id 快速添加/移除 Buff，内部使用 BuffSystemECSManager");
+            writer.WriteLine("/// </summary>");
             writer.WriteLine("public static class BuffHandleECS");
             writer.BeginBlock();
 
@@ -192,7 +194,7 @@ namespace BuffSystemECS.Editor
             // GetActiveBuffCount
             writer.DocSummary("获取目标对象上活跃Buff的数量");
             writer.DocParam("target", "目标GameObject");
-            writer.DocSummary("活跃Buff数量");
+            writer.WriteLine("/// <returns>活跃Buff数量</returns>");
             writer.WriteLine("public static int GetActiveBuffCount(GameObject target)");
             writer.BeginBlock();
             writer.WriteLine("if (BuffSystemECSManager.Instance != null && BuffSystemECSManager.Instance.TryGetEntity(target, out BuffEntity entity))");
