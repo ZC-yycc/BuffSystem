@@ -15,7 +15,7 @@ MonoBehaviour:
   buff_id_: 10003
   name_: "\u65F6\u95F4\u5237\u65B0BUFF"
   icon_: {fileID: 0}
-  duration_: 10
+  duration_: 3
   value_: 0
   stack_count_: 1
   effect_prefab_: {fileID: 0}

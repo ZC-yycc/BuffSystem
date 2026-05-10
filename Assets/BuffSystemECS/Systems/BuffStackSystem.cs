@@ -185,7 +185,6 @@ namespace BuffSystemECS
 
             // 从实体移除 Buff
             EntityManager.RemoveBuffFromEntity(entity, buff);
-            buffs.RemoveAt(index);
 
             BuffSystemECSManager.Instance?.NotifyBuffRemoved(buff);
             BuffSystemECSManager.Instance?.NotifyBuffCountChanged(entity);

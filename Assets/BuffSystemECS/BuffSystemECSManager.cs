@@ -12,41 +12,41 @@ namespace BuffSystemECS
     public class BuffSystemECSManager : MonoBehaviour
     {
         /// <summary>单例实例</summary>
-        public static BuffSystemECSManager Instance { get; private set; }
+        public static BuffSystemECSManager                      Instance { get; private set; }
 
         /// <summary>ECS World</summary>
-        public BuffWorld World { get; private set; }
+        public BuffWorld                                        World { get; private set; }
 
         /// <summary>世界内各系统的引用</summary>
-        public BuffDurationSystem DurationSystem { get; private set; }
-        public BuffStackSystem StackSystem { get; private set; }
-        public BuffEffectSystem EffectSystem { get; private set; }
+        public BuffDurationSystem                               DurationSystem { get; private set; }
+        public BuffStackSystem                                  StackSystem { get; private set; }
+        public BuffEffectSystem                                 EffectSystem { get; private set; }
 
         /// <summary>GameObject → 实体映射（反向查找）</summary>
-        private readonly Dictionary<GameObject, BuffEntity> game_object_to_entity_ = new Dictionary<GameObject, BuffEntity>();
+        private readonly Dictionary<GameObject, BuffEntity>     game_object_to_entity_ = new Dictionary<GameObject, BuffEntity>();
 
         /// <summary>实体 → GameObject 映射</summary>
-        private readonly Dictionary<BuffEntity, GameObject> entity_to_game_object_ = new Dictionary<BuffEntity, GameObject>();
+        private readonly Dictionary<BuffEntity, GameObject>     entity_to_game_object_ = new Dictionary<BuffEntity, GameObject>();
 
         /// <summary>实体 → 特效挂载点 映射</summary>
-        private readonly Dictionary<BuffEntity, Transform> entity_effect_target_ = new Dictionary<BuffEntity, Transform>();
+        private readonly Dictionary<BuffEntity, Transform>      entity_effect_target_ = new Dictionary<BuffEntity, Transform>();
 
         #region Events
 
         /// <summary>Buff 添加层数时触发</summary>
-        public event Action<BuffRuntimeData> OnAddBuffLayer;
+        public event Action<BuffRuntimeData>                    OnAddBuffLayer;
 
         /// <summary>Buff 移除层数时触发</summary>
-        public event Action<BuffRuntimeData> OnRemoveBuffLayer;
+        public event Action<BuffRuntimeData>                    OnRemoveBuffLayer;
 
         /// <summary>Buff 数据完全移除时触发</summary>
-        public event Action<BuffRuntimeData> OnBuffDataRemoved;
+        public event Action<BuffRuntimeData>                    OnBuffDataRemoved;
 
         /// <summary>活跃 Buff 数量变化时触发</summary>
-        public event Action<BuffEntity> OnActiveBuffCountChange;
+        public event Action<BuffEntity>                         OnActiveBuffCountChange;
 
         /// <summary>Stackable Buff 层效果触发时</summary>
-        public event Action<BuffRuntimeData, int> OnLayerEffectTrigger;
+        public event Action<BuffRuntimeData, int>               OnLayerEffectTrigger;
 
         #endregion
 

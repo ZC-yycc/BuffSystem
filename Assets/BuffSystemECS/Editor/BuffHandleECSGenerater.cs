@@ -55,24 +55,24 @@ namespace BuffSystemECS.Editor
             writer.WriteLine();
 
             writer.DocSummary("Buff 便捷调用类（ECS版本）");
-            writer.DocSummary("提供静态方法，通过 BuffID 快速添加/移除 Buff，内部使用 BuffSystemECSManager");
+            writer.DocSummary("提供静态方法，通过 buff_id 快速添加/移除 Buff，内部使用 BuffSystemECSManager");
             writer.WriteLine("public static class BuffHandleECS");
             writer.BeginBlock();
 
             // AddBuff 重载1: 通过 GameObject 添加
             writer.DocSummary("为目标对象添加Buff（使用默认配置的类型和时长）");
             writer.DocParam("target", "目标GameObject");
-            writer.DocParam("buffId", "Buff配置ID");
-            writer.WriteLine("public static void AddBuff(GameObject target, int buffId)");
+            writer.DocParam("buff_id", "Buff配置ID");
+            writer.WriteLine("public static void AddBuff(GameObject target, int buff_id)");
             writer.BeginBlock();
-            writer.WriteLine("if (BuffConfigProvider.TryGetConfig(buffId, out BuffConfig config))");
+            writer.WriteLine("if (BuffConfigProvider.TryGetConfig(buff_id, out BuffConfig config))");
             writer.BeginBlock();
             writer.WriteLine("BuffEffectType type = GetEffectTypeFromConfig(config);");
-            writer.WriteLine("BuffSystemECSManager.Instance?.AddBuff(target, buffId, type);");
+            writer.WriteLine("BuffSystemECSManager.Instance?.AddBuff(target, buff_id, type);");
             writer.EndBlock();
             writer.WriteLine("else");
             writer.BeginBlock();
-            writer.WriteLine("Debug.LogError($\"Buff ID {buffId} 找不到对应配置\");");
+            writer.WriteLine("Debug.LogError($\"Buff ID {buff_id} 找不到对应配置\");");
             writer.EndBlock();
             writer.EndBlock();
 
@@ -81,18 +81,18 @@ namespace BuffSystemECS.Editor
             // AddBuff 重载2: 指定时长
             writer.DocSummary("为目标对象添加Buff（指定时长）");
             writer.DocParam("target", "目标GameObject");
-            writer.DocParam("buffId", "Buff配置ID");
+            writer.DocParam("buff_id", "Buff配置ID");
             writer.DocParam("duration", "Buff持续时长（秒）");
-            writer.WriteLine("public static void AddBuff(GameObject target, int buffId, float duration)");
+            writer.WriteLine("public static void AddBuff(GameObject target, int buff_id, float duration)");
             writer.BeginBlock();
-            writer.WriteLine("if (BuffConfigProvider.TryGetConfig(buffId, out BuffConfig config))");
+            writer.WriteLine("if (BuffConfigProvider.TryGetConfig(buff_id, out BuffConfig config))");
             writer.BeginBlock();
             writer.WriteLine("BuffEffectType type = GetEffectTypeFromConfig(config);");
-            writer.WriteLine("BuffSystemECSManager.Instance?.AddBuff(target, buffId, type, duration);");
+            writer.WriteLine("BuffSystemECSManager.Instance?.AddBuff(target, buff_id, type, duration);");
             writer.EndBlock();
             writer.WriteLine("else");
             writer.BeginBlock();
-            writer.WriteLine("Debug.LogError($\"Buff ID {buffId} 找不到对应配置\");");
+            writer.WriteLine("Debug.LogError($\"Buff ID {buff_id} 找不到对应配置\");");
             writer.EndBlock();
             writer.EndBlock();
 
@@ -101,18 +101,18 @@ namespace BuffSystemECS.Editor
             // AddBuff 重载3: 指定施加者
             writer.DocSummary("为目标对象添加Buff（指定施加者）");
             writer.DocParam("target", "目标GameObject");
-            writer.DocParam("buffId", "Buff配置ID");
+            writer.DocParam("buff_id", "Buff配置ID");
             writer.DocParam("imposer", "Buff施加者");
-            writer.WriteLine("public static void AddBuff(GameObject target, int buffId, GameObject imposer)");
+            writer.WriteLine("public static void AddBuff(GameObject target, int buff_id, GameObject imposer)");
             writer.BeginBlock();
-            writer.WriteLine("if (BuffConfigProvider.TryGetConfig(buffId, out BuffConfig config))");
+            writer.WriteLine("if (BuffConfigProvider.TryGetConfig(buff_id, out BuffConfig config))");
             writer.BeginBlock();
             writer.WriteLine("BuffEffectType type = GetEffectTypeFromConfig(config);");
-            writer.WriteLine("BuffSystemECSManager.Instance?.AddBuff(target, buffId, type, -1, imposer);");
+            writer.WriteLine("BuffSystemECSManager.Instance?.AddBuff(target, buff_id, type, -1, imposer);");
             writer.EndBlock();
             writer.WriteLine("else");
             writer.BeginBlock();
-            writer.WriteLine("Debug.LogError($\"Buff ID {buffId} 找不到对应配置\");");
+            writer.WriteLine("Debug.LogError($\"Buff ID {buff_id} 找不到对应配置\");");
             writer.EndBlock();
             writer.EndBlock();
 
@@ -121,14 +121,14 @@ namespace BuffSystemECS.Editor
             // AddBuff 重载4: 完整参数
             writer.DocSummary("为目标对象添加Buff（完整参数）");
             writer.DocParam("target", "目标GameObject");
-            writer.DocParam("buffId", "Buff配置ID");
+            writer.DocParam("buff_id", "Buff配置ID");
             writer.DocParam("type", "Buff效果类型");
             writer.DocParam("duration", "Buff持续时长（秒，-1使用配置值）");
             writer.DocParam("imposer", "Buff施加者（可选）");
-            writer.DocParam("effectTarget", "特效挂载点（可选）");
-            writer.WriteLine("public static void AddBuff(GameObject target, int buffId, BuffEffectType type, float duration = -1, GameObject imposer = null, Transform effectTarget = null)");
+            writer.DocParam("effect_target", "特效挂载点（可选）");
+            writer.WriteLine("public static void AddBuff(GameObject target, int buff_id, BuffEffectType type, float duration = -1, GameObject imposer = null, Transform effect_target = null)");
             writer.BeginBlock();
-            writer.WriteLine("BuffSystemECSManager.Instance?.AddBuff(target, buffId, type, duration, imposer, effectTarget);");
+            writer.WriteLine("BuffSystemECSManager.Instance?.AddBuff(target, buff_id, type, duration, imposer, effect_target);");
             writer.EndBlock();
 
             writer.WriteLine();
@@ -136,12 +136,12 @@ namespace BuffSystemECS.Editor
             // RemoveBuff
             writer.DocSummary("移除目标对象上的指定Buff");
             writer.DocParam("target", "目标GameObject");
-            writer.DocParam("buffId", "要移除的Buff配置ID");
-            writer.WriteLine("public static bool RemoveBuff(GameObject target, int buffId)");
+            writer.DocParam("buff_id", "要移除的Buff配置ID");
+            writer.WriteLine("public static bool RemoveBuff(GameObject target, int buff_id)");
             writer.BeginBlock();
             writer.WriteLine("if (BuffSystemECSManager.Instance != null && BuffSystemECSManager.Instance.TryGetEntity(target, out BuffEntity entity))");
             writer.BeginBlock();
-            writer.WriteLine("return BuffSystemECSManager.Instance.RemoveBuff(entity, buffId);");
+            writer.WriteLine("return BuffSystemECSManager.Instance.RemoveBuff(entity, buff_id);");
             writer.EndBlock();
             writer.WriteLine("return false;");
             writer.EndBlock();
@@ -164,12 +164,12 @@ namespace BuffSystemECS.Editor
             // AddBlockBuff
             writer.DocSummary("禁止施加指定Buff");
             writer.DocParam("target", "目标GameObject");
-            writer.DocParam("buffId", "要禁止的Buff配置ID");
-            writer.WriteLine("public static void AddBlockBuff(GameObject target, int buffId)");
+            writer.DocParam("buff_id", "要禁止的Buff配置ID");
+            writer.WriteLine("public static void AddBlockBuff(GameObject target, int buff_id)");
             writer.BeginBlock();
             writer.WriteLine("if (BuffSystemECSManager.Instance != null && BuffSystemECSManager.Instance.TryGetEntity(target, out BuffEntity entity))");
             writer.BeginBlock();
-            writer.WriteLine("BuffSystemECSManager.Instance.AddBlockBuff(buffId, entity);");
+            writer.WriteLine("BuffSystemECSManager.Instance.AddBlockBuff(buff_id, entity);");
             writer.EndBlock();
             writer.EndBlock();
 
@@ -178,12 +178,12 @@ namespace BuffSystemECS.Editor
             // RemoveBlockBuff
             writer.DocSummary("移除禁止施加指定Buff的限制");
             writer.DocParam("target", "目标GameObject");
-            writer.DocParam("buffId", "要解除禁止的Buff配置ID");
-            writer.WriteLine("public static void RemoveBlockBuff(GameObject target, int buffId)");
+            writer.DocParam("buff_id", "要解除禁止的Buff配置ID");
+            writer.WriteLine("public static void RemoveBlockBuff(GameObject target, int buff_id)");
             writer.BeginBlock();
             writer.WriteLine("if (BuffSystemECSManager.Instance != null && BuffSystemECSManager.Instance.TryGetEntity(target, out BuffEntity entity))");
             writer.BeginBlock();
-            writer.WriteLine("BuffSystemECSManager.Instance.RemoveBlockBuff(buffId, entity);");
+            writer.WriteLine("BuffSystemECSManager.Instance.RemoveBlockBuff(buff_id, entity);");
             writer.EndBlock();
             writer.EndBlock();
 
