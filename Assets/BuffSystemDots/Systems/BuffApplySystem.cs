@@ -31,13 +31,13 @@ namespace BuffSystemDots
             // 先收集所有请求（避免在 nested foreach 中嵌套 Query）
             var requests = new NativeList<BuffAddRequest>(64, Allocator.Temp);
             var requestEntities = new NativeList<Entity>(64, Allocator.Temp);
-            Entities
-                .WithAll<BuffAddRequest>()
-                .ForEach((Entity entity, in BuffAddRequest request) =>
-                {
-                    requests.Add(request);
-                    requestEntities.Add(entity);
-                }).WithoutBurst().Run();
+            foreach (var (request, entity) in
+                     SystemAPI.Query<RefRO<BuffAddRequest>>()
+                         .WithEntityAccess())
+            {
+                requests.Add(request.ValueRO);
+                requestEntities.Add(entity);
+            }
 
             // 处理请求
             for (int i = 0; i < requests.Length; i++)

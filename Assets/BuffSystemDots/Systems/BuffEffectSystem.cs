@@ -37,19 +37,20 @@ namespace BuffSystemDots
             var ecb = new EntityCommandBuffer(Allocator.Temp);
 
             // 处理特效创建请求
-            Entities
-                .WithAll<BuffInstanceTag>()
-                .WithNone<BuffExpiredTag>()
-                .ForEach((Entity entity, ref BuffEffectReference effect_ref, in BuffRuntimeData runtime_data) =>
+            foreach (var (effect_ref, runtime_data, entity) in
+                     SystemAPI.Query<RefRW<BuffEffectReference>, RefRO<BuffRuntimeData>>()
+                         .WithAll<BuffInstanceTag>()
+                         .WithNone<BuffExpiredTag>()
+                         .WithEntityAccess())
+            {
+                if (effect_ref.ValueRO.EffectInstanceId == 0 && effect_ref.ValueRO.EffectPrefabHash != 0)
                 {
-                    if (effect_ref.EffectInstanceId == 0 && effect_ref.EffectPrefabHash != 0)
+                    if (effect_prefab_cache_.TryGetValue(effect_ref.ValueRO.EffectPrefabHash, out var prefab))
                     {
-                        if (effect_prefab_cache_.TryGetValue(effect_ref.EffectPrefabHash, out var prefab))
-                        {
-                            CreateEffectForBuff(entity, runtime_data, prefab, ref effect_ref);
-                        }
+                        CreateEffectForBuff(entity, runtime_data.ValueRO, prefab, ref effect_ref.ValueRW);
                     }
-                }).WithoutBurst().Run();
+                }
+            }
 
             // 处理 Buff 过期时的特效清理
             foreach (var (effect_ref, entity) in
